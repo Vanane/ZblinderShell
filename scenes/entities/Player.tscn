@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dct4h332u2nmx"]
+
+[ext_resource type="Script" uid="uid://bvbo6acgu12tk" path="res://scripts/entities/PlayerControls.gd" id="1_o7et6"]
+[ext_resource type="Texture2D" uid="uid://d3pac7kty2bjc" path="res://assets/sprites/zblinder.png" id="2_24gqh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_edjgo"]
+margin = 0.0
+size = Vector3(1.907, 1.897, 0.05)
+
+[node name="Body" type="CharacterBody3D"]
+disable_mode = 2
+script = ExtResource("1_o7et6")
+metadata/Camera = NodePath("../TrackingCamera")
+
+[node name="BodyCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0195007, -0.120651, 0)
+shape = SubResource("BoxShape3D_edjgo")
+
+[node name="BodySprite" type="Sprite3D" parent="."]
+texture = ExtResource("2_24gqh")

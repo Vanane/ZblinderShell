@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpe1mr0id330w"]
+
+[ext_resource type="Script" uid="uid://dahxgpp6ip7kw" path="res://scripts/scenes/PlaygroundInit.gd" id="1_is3ju"]
+[ext_resource type="Script" uid="uid://18wgf6ookbxu" path="res://scripts/managers/InputsManager.gd" id="3_m8u5f"]
+[ext_resource type="PackedScene" uid="uid://dct4h332u2nmx" path="res://scenes/entities/Player.tscn" id="4_mm0a5"]
+[ext_resource type="PackedScene" uid="uid://d4joqiwermrf6" path="res://scenes/entities/tracking_camera.tscn" id="5_mm0a5"]
+[ext_resource type="Script" uid="uid://c6f1vvk7qd2o0" path="res://scripts/managers/ConfigurationManager.gd" id="6_o6wi6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m8u5f"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_m8u5f"]
+size = Vector3(10, 1, 10)
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_is3ju")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 0)
+
+[node name="TerrainCollision" type="CollisionShape3D" parent="World/StaticBody3D"]
+shape = SubResource("BoxShape3D_m8u5f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D/TerrainCollision"]
+mesh = SubResource("BoxMesh_m8u5f")
+
+[node name="InputsManager" type="Node3D" parent="."]
+script = ExtResource("3_m8u5f")
+
+[node name="TrackingCamera" parent="." instance=ExtResource("5_mm0a5")]
+
+[node name="Player" parent="." instance=ExtResource("4_mm0a5")]
+
+[node name="ConfigurationManager" type="Node3D" parent="."]
+script = ExtResource("6_o6wi6")
+
+[connection signal="mouseMoved" from="InputsManager" to="Player" method="look"]
+[connection signal="playerJumped" from="InputsManager" to="Player" method="jump"]
+[connection signal="playerMoved" from="InputsManager" to="Player" method="move"]
+[connection signal="zoomedIn" from="InputsManager" to="Player" method="zoom_in"]
+[connection signal="zoomedOut" from="InputsManager" to="Player" method="zoom_out"]
