@@ -32,6 +32,13 @@ func look(relative:Vector2):
 func _physics_process(_delta: float) -> void:
 	self.velocity += Vector3.DOWN*.5	
 	self.position += self._direction
+	
+	var morgie:Morgie = $"Untitled"
+	if _direction != Vector3.ZERO:
+		morgie.walk()
+	else:
+		morgie.stop()
+	
 	_direction = Vector3.ZERO
 	self.move_and_slide()
 
