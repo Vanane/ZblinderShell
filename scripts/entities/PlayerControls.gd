@@ -8,13 +8,11 @@ var _direction:Vector3
 
 func _ready():
 	self._setup_camera()
-	
 	self.speed = .2
 
 func _setup_camera():
 	self._pov = get_node(get_meta("Camera"))
 	self._pov.set_target(self, Vector3(-1, 0, -2.5))
-
 
 
 func move(direction:Vector2):
@@ -33,11 +31,6 @@ func _physics_process(_delta: float) -> void:
 	self.velocity += Vector3.DOWN*.5	
 	self.position += self._direction
 	
-	var morgie:Morgie = $"Untitled"
-	if _direction != Vector3.ZERO:
-		morgie.walk()
-	else:
-		morgie.stop()
 	
 	_direction = Vector3.ZERO
 	self.move_and_slide()

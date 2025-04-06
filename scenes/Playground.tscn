@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpe1mr0id330w"]
+
+[ext_resource type="Script" uid="uid://dahxgpp6ip7kw" path="res://scripts/scenes/PlaygroundInit.gd" id="1_gv6bp"]
+[ext_resource type="Script" uid="uid://18wgf6ookbxu" path="res://scripts/managers/InputsManager.gd" id="2_pewrh"]
+[ext_resource type="Script" uid="uid://c6f1vvk7qd2o0" path="res://scripts/managers/ConfigurationManager.gd" id="3_070rk"]
+[ext_resource type="PackedScene" uid="uid://d4joqiwermrf6" path="res://scenes/entities/TrackingCamera.tscn" id="4_h8tnp"]
+[ext_resource type="PackedScene" uid="uid://of4j7p8nsb64" path="res://scenes/imported/PlayerBody.tscn" id="5_gv6bp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m8u5f"]
+size = Vector3(200, 1, 200)
+
+[sub_resource type="BoxMesh" id="BoxMesh_m8u5f"]
+size = Vector3(200, 1, 200)
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_gv6bp")
+
+[node name="Managers" type="Node3D" parent="."]
+
+[node name="InputsManager" type="Node3D" parent="Managers"]
+script = ExtResource("2_pewrh")
+
+[node name="ConfigurationManager" type="Node3D" parent="Managers"]
+script = ExtResource("3_070rk")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 0)
+
+[node name="TerrainCollision" type="CollisionShape3D" parent="World/StaticBody3D"]
+shape = SubResource("BoxShape3D_m8u5f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D/TerrainCollision"]
+mesh = SubResource("BoxMesh_m8u5f")
+
+[node name="WorldLight" type="DirectionalLight3D" parent="World"]
+transform = Transform3D(0.707107, -0.612372, 0.353553, 0, 0.5, 0.866026, -0.707107, -0.612372, 0.353553, 0, 500, 0)
+
+[node name="TrackingCamera" parent="." instance=ExtResource("4_h8tnp")]
+
+[node name="Player" parent="." instance=ExtResource("5_gv6bp")]
+metadata/Camera = NodePath("../TrackingCamera")
+
+[connection signal="mouseMoved" from="Managers/InputsManager" to="Player" method="look"]
+[connection signal="playerJumped" from="Managers/InputsManager" to="Player" method="jump"]
+[connection signal="playerMoved" from="Managers/InputsManager" to="Player" method="move"]
+[connection signal="zoomedIn" from="Managers/InputsManager" to="Player" method="zoom_in"]
+[connection signal="zoomedOut" from="Managers/InputsManager" to="Player" method="zoom_out"]

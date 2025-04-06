@@ -18,8 +18,31 @@
   - Raises signals :
     - when fight starts, which actors are in it, is player concerned
     - when fight stops, who won, who is alive
-
 - Implement different weapons : swords, rapiers, hammers, whips, bows, 1-handed, 2-handed, dual wield
+
+#### Dagger
+
+#### Sword
+
+#### Rapier
+
+#### Longsword
+
+#### Warhammer
+
+#### (Cross?)bow
+
+#### Spear
+
+#### Whip
+
+#### Shield
+
+#### Spells
+
+
+
+
 
 ### Ambiance
 
@@ -38,6 +61,21 @@
 ### Models
 
 - Some houses
+- Weapons
+- 
 
 ### Sprites
 
+
+
+# Notes
+
+## Weapons
+
+Each weapon can be placed on several axes :
+
+- Mobile <-> Stationary
+- Quick <-> Slow
+- Ranged <-> Short
+-  <-> 
+-  <-> 

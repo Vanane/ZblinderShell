@@ -4,11 +4,13 @@ var animator:AnimationPlayer
 
 
 func _ready() -> void:
-	self.animator = $"AnimationPlayer"
-	self.animator.get_animation("PlayerActions").loop_mode = Animation.LOOP_LINEAR	
+	$"Player/Collision/CollisionShape3D".reparent(self)
 
-func walk():
-	self.animator.play("PlayerActions")
+	self.animator = $"AnimationPlayer"
+	self.animator.play("Idle")
+
+func run():
+	self.animator.play("Run")
 
 func stop():
-	self.animator.stop()
+	self.animator.play("Idle")
