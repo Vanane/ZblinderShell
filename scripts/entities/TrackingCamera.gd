@@ -5,6 +5,7 @@ signal pov_exited
 
 var target:Node3D
 
+@export
 var offset:Vector3
 
 #region Internal fields
@@ -36,12 +37,13 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	self.position = self.target.position
-	self._camera.position = self.offset
-
-func set_target(target:Node3D, offset:Vector3 = Vector3.ZERO):
-	self.target = target
-	self.offset = offset
 	self._camera.position = self._cameraOrigin + self.offset
+
+func set_target(target:Node3D):
+	self.target = target
+
+func set_offset(offset:Vector3):
+	self.offset = offset
 
 func rotate_relative(relative:Vector2) -> void:
 	self.rotate_y(-relative.x)

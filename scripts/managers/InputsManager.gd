@@ -2,6 +2,7 @@ extends Node3D
 
 signal playerJumped
 signal playerMoved(direction:Vector2)
+signal playerUnsheathed
 
 signal zoomedIn
 signal zoomedOut
@@ -15,7 +16,6 @@ func _input(event: InputEvent) -> void:
 	if not event is InputEventMouseMotion:
 		return
 	mouseMoved.emit(event.relative)
-
 
 func scanInputs():
 		var direction = Input.get_vector("PlayerMoveLeft", "PlayerMoveRight", "PlayerMoveBackward", "PlayerMoveForward")
@@ -31,3 +31,5 @@ func scanZooms():
 		zoomedIn.emit()
 	if Input.is_action_just_pressed("ZoomOut"):
 		zoomedOut.emit()
+	if Input.is_action_just_pressed("UnsheathWeapon"):
+		playerUnsheathed.emit()

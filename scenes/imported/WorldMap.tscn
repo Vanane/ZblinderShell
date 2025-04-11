@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6g42cqbqn70u"]
+
+[ext_resource type="PackedScene" uid="uid://diyna2s67ruoi" path="res://blender/world_map.blend" id="1_am54u"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_am54u"]
+
+[node name="world_map" instance=ExtResource("1_am54u")]
+
+[node name="StaticBody3D" parent="Plane" index="0"]
+physics_material_override = SubResource("PhysicsMaterial_am54u")
+
+[node name="CollisionShape3D" parent="Plane/StaticBody3D" index="0"]
+debug_fill = false

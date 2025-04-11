@@ -1,7 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://of4j7p8nsb64"]
-
-[ext_resource type="PackedScene" uid="uid://bfcg2ws0ufdq1" path="res://blender/human.blend" id="1_81jou"]
-[ext_resource type="Script" uid="uid://bvbo6acgu12tk" path="res://scripts/entities/PlayerControls.gd" id="2_4siwg"]
-
-[node name="PlayerBody" instance=ExtResource("1_81jou")]
-script = ExtResource("2_4siwg")
