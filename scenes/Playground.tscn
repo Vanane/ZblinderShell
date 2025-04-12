@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bpe1mr0id330w"]
+[gd_scene load_steps=8 format=3 uid="uid://bpe1mr0id330w"]
 
 [ext_resource type="Script" uid="uid://dahxgpp6ip7kw" path="res://scripts/scenes/PlaygroundInit.gd" id="1_gv6bp"]
 [ext_resource type="Script" uid="uid://18wgf6ookbxu" path="res://scripts/managers/InputsManager.gd" id="2_pewrh"]
@@ -7,12 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://c6g42cqbqn70u" path="res://scenes/imported/WorldMap.tscn" id="4_pewrh"]
 [ext_resource type="PackedScene" uid="uid://c20gf3jq407x3" path="res://blender/buildings.blend" id="5_070rk"]
 [ext_resource type="PackedScene" uid="uid://dbrnh7valfucy" path="res://scenes/imported/PlayerCharacter.tscn" id="6_pewrh"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_m8u5f"]
-size = Vector3(200, 1, 200)
-
-[sub_resource type="BoxMesh" id="BoxMesh_m8u5f"]
-size = Vector3(200, 1, 200)
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_gv6bp")
@@ -33,23 +27,15 @@ transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, -50, 0)
 [node name="buildings" parent="World/world_map" instance=ExtResource("5_070rk")]
 transform = Transform3D(-0.311577, 0, -0.512757, 0, 0.6, 0, 0.512757, 0, -0.311577, -8.46027, 7.64918, 35.0472)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="World"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -79.095, 0)
-
-[node name="TerrainCollision" type="CollisionShape3D" parent="World/StaticBody3D"]
-shape = SubResource("BoxShape3D_m8u5f")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D/TerrainCollision"]
-mesh = SubResource("BoxMesh_m8u5f")
-
 [node name="WorldLight" type="DirectionalLight3D" parent="World"]
-transform = Transform3D(0.707107, -0.612372, 0.353553, 0, 0.5, 0.866026, -0.707107, -0.612372, 0.353553, 0, 500, 0)
+transform = Transform3D(-0.939693, 0.17101, -0.296198, 0, 0.866025, 0.5, 0.34202, 0.469846, -0.813798, 0, 0, 0)
+light_color = Color(1, 0.815686, 0.815686, 1)
 
 [node name="TrackingCamera" parent="." instance=ExtResource("4_h8tnp")]
 offset = Vector3(-1, 1, 0)
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("6_pewrh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60.9289, 4.74311, 167.098)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, -11.2769, 200)
 wall_min_slide_angle = 0.785398
 safe_margin = 0.1
 speed = 0.1
@@ -57,6 +43,8 @@ jump_height = 10.0
 metadata/Camera = NodePath("../TrackingCamera")
 
 [connection signal="mouseMoved" from="Managers/InputsManager" to="PlayerCharacter" method="look"]
+[connection signal="playerAttacked" from="Managers/InputsManager" to="PlayerCharacter" method="attack"]
+[connection signal="playerBlocked" from="Managers/InputsManager" to="PlayerCharacter" method="block"]
 [connection signal="playerJumped" from="Managers/InputsManager" to="PlayerCharacter" method="jump"]
 [connection signal="playerMoved" from="Managers/InputsManager" to="PlayerCharacter" method="move"]
 [connection signal="playerUnsheathed" from="Managers/InputsManager" to="PlayerCharacter" method="toggle_weapon"]
