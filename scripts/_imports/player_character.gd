@@ -4,6 +4,7 @@ extends EditorScenePostImport
 func _post_import(scene:Node):
 	self.unwrap_collision(scene)
 	self.add_metadata(scene)
+	
 	return scene
 
 func add_metadata(scene:Node):

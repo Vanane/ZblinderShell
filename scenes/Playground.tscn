@@ -43,6 +43,8 @@ jump_height = 10.0
 metadata/Camera = NodePath("../TrackingCamera")
 
 [connection signal="mouseMoved" from="Managers/InputsManager" to="PlayerCharacter" method="look"]
+[connection signal="playerAttacked" from="Managers/InputsManager" to="PlayerCharacter" method="attack"]
+[connection signal="playerBlocked" from="Managers/InputsManager" to="PlayerCharacter" method="block"]
 [connection signal="playerJumped" from="Managers/InputsManager" to="PlayerCharacter" method="jump"]
 [connection signal="playerMoved" from="Managers/InputsManager" to="PlayerCharacter" method="move"]
 [connection signal="playerUnsheathed" from="Managers/InputsManager" to="PlayerCharacter" method="toggle_weapon"]

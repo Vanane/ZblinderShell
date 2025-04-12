@@ -5,6 +5,8 @@ extends CharacterBody3D
 var speed:float
 @export
 var jump_height:float
+@export
+var unsheathed:bool = false
 
 @export_custom(PROPERTY_HINT_NONE, "readonly", PROPERTY_USAGE_READ_ONLY)
 var moving_direction:Vector3
@@ -79,8 +81,28 @@ func zoom_out() -> void:
 #endregion
 
 
-@export
-var unsheathed:bool = false
 func toggle_weapon() -> void:
+	self.can_attack = true
 	self.unsheathed = not self.unsheathed
 	pass # Replace with function body.
+
+
+var attackCycle = ["SwordSwing1", "SwordSwing2"]
+var attackState = 0
+
+func attack() -> void:
+	if not self.unsheathed || not self.can_attack:
+		return
+	var playback:AnimationNodeStateMachinePlayback = $"AnimationTree".get("parameters/StateMachine/playback")
+	
+	playback.travel(attackCycle[attackState])
+	attackState = (attackState + 1) % attackCycle.size()
+	self.can_attack = false
+
+
+func block() -> void:
+	pass # Replace with function body.
+
+var can_attack:bool
+func attack_ended():
+	self.can_attack = true

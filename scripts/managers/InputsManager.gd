@@ -10,6 +10,8 @@ var _joystickMotion:Vector2
 # Signals
 signal playerJumped
 signal playerMoved(direction:Vector2)
+signal playerAttacked
+signal playerBlocked
 signal playerUnsheathed
 
 signal zoomedIn
@@ -43,6 +45,12 @@ func scanInputs():
 		
 		if jump:
 			playerJumped.emit()
+			
+		if attack:
+			playerAttacked.emit()
+			
+		if block:
+			playerBlocked.emit()
 			
 		if sheathUnsheath:
 			playerUnsheathed.emit()
