@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-#region Exported variables
+#region Publics
 @export
 var speed:float
 @export
@@ -12,40 +12,56 @@ var moving_direction:Vector3
 var is_falling:bool
 #endregion
 
-#region Internal variables
-var _pov:TrackingCamera
+#region Privates
+var _camera:TrackingCamera
 
-var _direction:Vector3
+var _walkDirection:Vector3
+var _cameraRotation:Vector2
 #endregion
 
 func _ready():
 	self._setup_camera()
 
-func _physics_process(_delta: float) -> void:
-	self.position += self._direction
-	
-	self.velocity += Vector3.DOWN*.5
-	self.move_and_slide()
-	
-	self._direction = Vector3.ZERO
-
-func _process(_delta:float) -> void:
+func _process(delta:float) -> void:
 	self._refresh_anim_flags()
 
+func _physics_process(delta: float) -> void:
+	_process_controls(delta)
+	_process_cleanup(delta)
+
+func _process_controls(delta: float):
+	# Camera movements, prior to moving relative to the camera
+	self._camera.rotate_relative(self._cameraRotation * ConfigurationManager.get_param("controls.mouse.sensitivity"))	
+
+	# Body rotation to follow the direction
+	if self._walkDirection != Vector3.ZERO:
+		var angledWalk = self._walkDirection.rotated(Vector3.UP, self._camera.rotation.y)
+		var targetAngle = self.basis.z.signed_angle_to(angledWalk, Vector3.UP)
+		self.rotation.y += lerp(0.0, targetAngle, delta * 10)
+		
+		# Walk
+		self.translate_object_local(Vector3.BACK * self.speed)
+		
+	# Gravity
+	self.velocity += Vector3.DOWN*.5
+	self.move_and_slide()
+
+func _process_cleanup(delta: float):
+	self._walkDirection = Vector3.ZERO
+	self._cameraRotation = Vector2.ZERO
 
 func _setup_camera():
-	self._pov = get_node(get_meta("Camera"))
-	self._pov.set_target(self)
+	self._camera = get_node(get_meta("Camera"))
+	self._camera.set_target(self)
 
 # Called each frame to expose internal variables to animation state machines
 func _refresh_anim_flags():
-	self.moving_direction = self._direction
+	self.moving_direction = self._walkDirection
 	self.is_falling = not self.is_on_floor()
 
-#region Signals
-func move(direction:Vector2):
-	self.rotation = self._pov.rotation
-	self._direction = (Vector3(-direction.x, 0.0, direction.y) * self.speed).rotated(Vector3.UP, self.rotation.y)
+#region Signal Handling
+func move(direction:Vector2):	
+	self._walkDirection = Vector3(-direction.x, 0.0, direction.y)
 
 func jump():
 	if self.is_on_floor():
@@ -53,13 +69,13 @@ func jump():
 	return
 
 func look(relative:Vector2):
-	self._pov.rotate_relative(relative * ConfigurationManager.get_param("controls.mouse.sensitivity"))
+	self._cameraRotation = Vector2(-relative.x, relative.y)
 
 func zoom_in() -> void:
-	self._pov.remove_distance()
+	self._camera.remove_distance()
 
 func zoom_out() -> void:
-	self._pov.add_distance()
+	self._camera.add_distance()
 #endregion
 
 

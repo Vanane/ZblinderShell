@@ -46,7 +46,7 @@ func set_offset(offset:Vector3):
 	self.offset = offset
 
 func rotate_relative(relative:Vector2) -> void:
-	self.rotate_y(-relative.x)
+	self.rotate_y(relative.x)
 	self._pivot.rotate_x(relative.y)
 	self._pivot.rotation.x = deg_to_rad(clamp(self._pivot.rotation_degrees.x, self._xLimit.x, self._xLimit.y))
 

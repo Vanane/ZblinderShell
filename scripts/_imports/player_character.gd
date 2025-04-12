@@ -1,11 +1,15 @@
 @tool
 extends EditorScenePostImport
 
-func _post_import(scene):
+func _post_import(scene:Node):
 	self.unwrap_collision(scene)
+	self.add_metadata(scene)
 	return scene
 
-func unwrap_collision(scene):
+func add_metadata(scene:Node):
+	scene.set_meta("Camera", NodePath())
+	
+func unwrap_collision(scene:Node):
 	var player = scene.get_node("Player")
 	var collision = player.get_node("_Collision")
 	var shape = collision.get_node("CollisionShape3D")
