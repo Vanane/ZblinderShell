@@ -39,7 +39,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, -11.2769, 200)
 wall_min_slide_angle = 0.785398
 safe_margin = 0.1
 speed = 0.1
-jump_height = 10.0
 metadata/Camera = NodePath("../TrackingCamera")
 
 [connection signal="mouseMoved" from="Managers/InputsManager" to="PlayerCharacter" method="look"]

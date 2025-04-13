@@ -1,27 +1,41 @@
 extends CharacterBody3D
 
 #region Publics
+@export_custom(PROPERTY_HINT_NONE, "readonly", PROPERTY_USAGE_READ_ONLY)
+var stats:Entity = Entity.default()
+
 @export
 var speed:float
 @export
-var jump_height:float
+var jumpHeight:float
 @export
-var unsheathed:bool = false
+var isWeaponOut:bool = false
+
+@export
+var isAllowedToAttack:bool
+
 
 @export_custom(PROPERTY_HINT_NONE, "readonly", PROPERTY_USAGE_READ_ONLY)
-var moving_direction:Vector3
+var walkDirection:Vector3
 @export_custom(PROPERTY_HINT_NONE, "readonly", PROPERTY_USAGE_READ_ONLY)
-var is_falling:bool
+var isFalling:bool
 #endregion
 
 #region Privates
+var _animSM:AnimationNodeStateMachinePlayback
 var _camera:TrackingCamera
 
 var _walkDirection:Vector3
 var _cameraRotation:Vector2
+
+var _weapon:Weapon
 #endregion
 
 func _ready():
+	self._animSM = $"AnimationTree".get("parameters/StateMachine/playback")
+	
+	self._weapon = Sword.new()
+	
 	self._setup_camera()
 
 func _process(delta:float) -> void:
@@ -58,8 +72,8 @@ func _setup_camera():
 
 # Called each frame to expose internal variables to animation state machines
 func _refresh_anim_flags():
-	self.moving_direction = self._walkDirection
-	self.is_falling = not self.is_on_floor()
+	self.walkDirection = self._walkDirection
+	self.isFalling = not self.is_on_floor()
 
 #region Signal Handling
 func move(direction:Vector2):	
@@ -67,7 +81,7 @@ func move(direction:Vector2):
 
 func jump():
 	if self.is_on_floor():
-		self.velocity += Vector3.UP * jump_height
+		self.velocity += Vector3.UP * jumpHeight
 	return
 
 func look(relative:Vector2):
@@ -78,31 +92,36 @@ func zoom_in() -> void:
 
 func zoom_out() -> void:
 	self._camera.add_distance()
+
+func toggle_weapon() -> void:
+	self.isAllowedToAttack = true
+	self.isWeaponOut = not self.isWeaponOut
+	pass # Replace with function body.
+
+
+func allow_attack():
+	self.isAllowedToAttack = true
+
+func attack_ended():
+	self.isAllowedToAttack = true
+	self._weapon.resetCombo()
+
+
+func attack() -> void:
+	self.do_attack(Weapon.Hand.Main)
+
+func block() -> void:
+	self.do_attack(Weapon.Hand.Side)
 #endregion
 
 
-func toggle_weapon() -> void:
-	self.can_attack = true
-	self.unsheathed = not self.unsheathed
-	pass # Replace with function body.
-
-
-var attackCycle = ["SwordSwing1", "SwordSwing2"]
-var attackState = 0
-
-func attack() -> void:
-	if not self.unsheathed || not self.can_attack:
+func do_attack(hand:Weapon.Hand):
+	if not self.isWeaponOut || not self.isAllowedToAttack:
 		return
-	var playback:AnimationNodeStateMachinePlayback = $"AnimationTree".get("parameters/StateMachine/playback")
 	
-	playback.travel(attackCycle[attackState])
-	attackState = (attackState + 1) % attackCycle.size()
-	self.can_attack = false
+	var c:Combo = self._weapon.nextCombo(hand)
 
-
-func block() -> void:
-	pass # Replace with function body.
-
-var can_attack:bool
-func attack_ended():
-	self.can_attack = true
+	if not c == null:
+		self.isAllowedToAttack = false
+		self._animSM.travel(c.animation)
+		print("playing " + c.animation)
