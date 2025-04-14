@@ -159,16 +159,16 @@ node_connections = [&"output", 0, &"StateMachine"]
 script = ExtResource("2_4siwg")
 
 [node name="Skeleton3D" parent="Player" index="2"]
-bones/0/position = Vector3(-0.35, 1.61485, 3.34896e-16)
+bones/0/position = Vector3(-0.35, 1.66094, 3.34895e-16)
 bones/0/rotation = Quaternion(0.707107, -2.56993e-08, -0.707107, -2.56993e-08)
 bones/1/rotation = Quaternion(-7.77364e-08, -2.20287e-07, -1.62788e-15, 1)
 bones/2/scale = Vector3(0, 0, 0)
-bones/3/position = Vector3(0.35, 1.60485, -2.26437e-10)
+bones/3/position = Vector3(0.35, 1.65094, -2.26437e-10)
 bones/3/rotation = Quaternion(0.707107, 2.63418e-08, 0.707107, -2.63418e-08)
 bones/5/scale = Vector3(0, 0, 0)
-bones/10/position = Vector3(0, 0.704845, 5.33056e-08)
+bones/10/position = Vector3(0, 0.750937, 5.20316e-08)
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="3"]
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
 tree_root = SubResource("AnimationNodeBlendTree_o0qsi")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")

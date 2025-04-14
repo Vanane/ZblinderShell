@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://c80qghf3r8xuv"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://dnea65vr3hyuc" path="res://assets/materials/DoorBumper.tres" id="1_rwqoy"]
+[ext_resource type="Script" uid="uid://b51w5rlpk118m" path="res://scripts/entities/DoorRoot.gd" id="1_sqvrh"]
+[ext_resource type="Script" uid="uid://dmpvtie4e2p73" path="res://scripts/entities/Door.gd" id="2_sqvrh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h8tnp"]
+size = Vector3(2, 40, 0.125)
+
+[sub_resource type="BoxMesh" id="BoxMesh_h8tnp"]
+size = Vector3(2, 40, 0.125)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ak4i2"]
+
+[node name="Door" type="Node3D"]
+rotation_edit_mode = 1
+script = ExtResource("1_sqvrh")
+doorDimensions = Vector3(2, 2, 0.125)
+
+[node name="DoorBody" type="RigidBody3D" parent="."]
+collision_layer = 3
+collision_mask = 3
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+mass = 2.0
+physics_material_override = ExtResource("1_rwqoy")
+gravity_scale = 0.0
+center_of_mass_mode = 1
+center_of_mass = Vector3(1, 0, 0)
+angular_damp_mode = 1
+angular_damp = 0.5
+script = ExtResource("2_sqvrh")
+closingSpeed = 0.025
+timeBeforeClose = 3000.0
+
+[node name="Collision" type="CollisionShape3D" parent="DoorBody"]
+shape = SubResource("BoxShape3D_h8tnp")
+
+[node name="Mesh" type="MeshInstance3D" parent="DoorBody/Collision"]
+mesh = SubResource("BoxMesh_h8tnp")
+skeleton = NodePath("")
+
+[node name="DoorBumperBack" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5625, 0, 0.5625)
+collision_layer = 2
+collision_mask = 2
+
+[node name="Collision" type="CollisionShape3D" parent="DoorBumperBack"]
+shape = SubResource("BoxShape3D_ak4i2")
+
+[node name="DoorBumperFront" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5625, 0, -0.5625)
+collision_layer = 2
+collision_mask = 2
+
+[node name="Collision" type="CollisionShape3D" parent="DoorBumperFront"]
+shape = SubResource("BoxShape3D_ak4i2")
+
+[connection signal="body_entered" from="DoorBody" to="DoorBody" method="bumper_collided"]

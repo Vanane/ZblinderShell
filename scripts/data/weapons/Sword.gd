@@ -1,6 +1,10 @@
 extends Weapon
 class_name Sword
 
+
+static func default() -> Sword:
+	return Sword.new()
+
 func _init():
 	super._init(WeaponType.Sword)
 	

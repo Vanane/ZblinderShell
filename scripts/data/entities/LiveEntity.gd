@@ -1,11 +1,10 @@
 extends Object
-class_name Entity
-
+class_name LiveEntity
 
 const WALK_SPEED = 2#m/s
+const ROTATION_SPEED = 10#
 
 const JUMP_HEIGHT = 1#m
-
 
 #region Char Stats
 @export
@@ -38,12 +37,20 @@ static func default():
 	r.stamina = 1
 	r.maxMana = 1
 	r.mana = 1
-	r.walkSpeed = 1
+	r.walkSpeed = 6
 	r.jumpHeight = 1
+	
+	return r
 
 
 func get_walk_speed():
-	return WALK_SPEED * self.walkSpeed
+	return (self.walkSpeed if self.walkSpeed > -1 else WALK_SPEED)
 	
-func get_jump_height():
-	return JUMP_HEIGHT * self.jumpHeight
+func get_jump_height() -> Vector3:
+	return Vector3.UP * (self.jumpHeight if self.jumpHeight > -1 else JUMP_HEIGHT) * 2 * sqrt(get_gravity()/2)
+
+func get_gravity() -> float:
+	return float(ProjectSettings.get_setting("physics/3d/default_gravity"))
+	
+func get_gravity_force() -> Vector3:
+	return Vector3(ProjectSettings.get_setting("physics/3d/default_gravity_vector")) * get_gravity()

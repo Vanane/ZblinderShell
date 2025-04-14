@@ -1,12 +1,23 @@
-[gd_scene load_steps=8 format=3 uid="uid://bpe1mr0id330w"]
+[gd_scene load_steps=13 format=3 uid="uid://bpe1mr0id330w"]
 
 [ext_resource type="Script" uid="uid://dahxgpp6ip7kw" path="res://scripts/scenes/PlaygroundInit.gd" id="1_gv6bp"]
 [ext_resource type="Script" uid="uid://18wgf6ookbxu" path="res://scripts/managers/InputsManager.gd" id="2_pewrh"]
 [ext_resource type="Script" uid="uid://c6f1vvk7qd2o0" path="res://scripts/managers/ConfigurationManager.gd" id="3_070rk"]
 [ext_resource type="PackedScene" uid="uid://d4joqiwermrf6" path="res://scenes/entities/TrackingCamera.tscn" id="4_h8tnp"]
 [ext_resource type="PackedScene" uid="uid://c6g42cqbqn70u" path="res://scenes/imported/WorldMap.tscn" id="4_pewrh"]
-[ext_resource type="PackedScene" uid="uid://c20gf3jq407x3" path="res://blender/buildings.blend" id="5_070rk"]
+[ext_resource type="PackedScene" uid="uid://c80qghf3r8xuv" path="res://scenes/entities/Door.tscn" id="6_8luvy"]
+[ext_resource type="Script" uid="uid://b1e4yd5c6vkog" path="res://scripts/entities/Entity.gd" id="6_h8tnp"]
 [ext_resource type="PackedScene" uid="uid://dbrnh7valfucy" path="res://scenes/imported/PlayerCharacter.tscn" id="6_pewrh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_070rk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_070rk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8luvy"]
+size = Vector3(10, 10, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ak4i2"]
+size = Vector3(10, 10, 1)
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_gv6bp")
@@ -24,20 +35,48 @@ script = ExtResource("3_070rk")
 [node name="world_map" parent="World" instance=ExtResource("4_pewrh")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, -50, 0)
 
-[node name="buildings" parent="World/world_map" instance=ExtResource("5_070rk")]
-transform = Transform3D(-0.311577, 0, -0.512757, 0, 0.6, 0, 0.512757, 0, -0.311577, -8.46027, 7.64918, 35.0472)
-
 [node name="WorldLight" type="DirectionalLight3D" parent="World"]
 transform = Transform3D(-0.939693, 0.17101, -0.296198, 0, 0.866025, 0.5, 0.34202, 0.469846, -0.813798, 0, 0, 0)
 light_color = Color(1, 0.815686, 0.815686, 1)
 
+[node name="Box" type="RigidBody3D" parent="World"]
+transform = Transform3D(0.845224, -0.534411, 0, 0.426828, 0.675071, 0.601745, -0.32158, -0.50861, 0.798688, -49.9808, -6.20073, 185.242)
+mass = 0.1
+gravity_scale = 0.1
+script = ExtResource("6_h8tnp")
+
+[node name="BoxCollision" type="CollisionShape3D" parent="World/Box"]
+shape = SubResource("BoxShape3D_070rk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Box"]
+mesh = SubResource("BoxMesh_070rk")
+skeleton = NodePath("")
+
+[node name="Box2" type="RigidBody3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.1746, -5.5248, 188.055)
+mass = 50.0
+script = ExtResource("6_h8tnp")
+
+[node name="BoxCollision" type="CollisionShape3D" parent="World/Box2"]
+shape = SubResource("BoxShape3D_8luvy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Box2"]
+mesh = SubResource("BoxMesh_ak4i2")
+skeleton = NodePath("")
+
+[node name="Door" parent="World" instance=ExtResource("6_8luvy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.0196, 8.5, 176.71)
+doorDimensions = Vector3(2, 40, 0.125)
+
+[node name="Door2" parent="World" instance=ExtResource("6_8luvy")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -54.03, 8.5, 176.71)
+doorDimensions = Vector3(2, 40, 0.125)
+
 [node name="TrackingCamera" parent="." instance=ExtResource("4_h8tnp")]
-offset = Vector3(-1, 1, 0)
+offset = Vector3(-1, 1, -5)
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("6_pewrh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, -11.2769, 200)
-wall_min_slide_angle = 0.785398
-safe_margin = 0.1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.2988, -10.8874, 174.021)
 speed = 0.1
 metadata/Camera = NodePath("../TrackingCamera")
 
