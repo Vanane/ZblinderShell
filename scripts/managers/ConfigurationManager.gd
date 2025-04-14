@@ -6,8 +6,15 @@ class_name ConfigurationManager
 static var params:Dictionary  = {
 		"controls": {
 			"mouse": {
-					"sensitivity":0.005
+				"sensitivity":0.005
+			},
+			"gamepad":{
+				"joystick":{
+					"left":{
+						"sensitivity":1
+					}
 				}
+			}
 		}
 	}
 

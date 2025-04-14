@@ -1,12 +1,41 @@
-[gd_scene load_steps=8 format=3 uid="uid://bpe1mr0id330w"]
+[gd_scene load_steps=21 format=3 uid="uid://bpe1mr0id330w"]
 
 [ext_resource type="Script" uid="uid://dahxgpp6ip7kw" path="res://scripts/scenes/PlaygroundInit.gd" id="1_gv6bp"]
 [ext_resource type="Script" uid="uid://18wgf6ookbxu" path="res://scripts/managers/InputsManager.gd" id="2_pewrh"]
 [ext_resource type="Script" uid="uid://c6f1vvk7qd2o0" path="res://scripts/managers/ConfigurationManager.gd" id="3_070rk"]
 [ext_resource type="PackedScene" uid="uid://d4joqiwermrf6" path="res://scenes/entities/TrackingCamera.tscn" id="4_h8tnp"]
 [ext_resource type="PackedScene" uid="uid://c6g42cqbqn70u" path="res://scenes/imported/WorldMap.tscn" id="4_pewrh"]
-[ext_resource type="PackedScene" uid="uid://c20gf3jq407x3" path="res://blender/buildings.blend" id="5_070rk"]
+[ext_resource type="Script" uid="uid://b51w5rlpk118m" path="res://scripts/entities/DoorRoot.gd" id="6_ak4i2"]
+[ext_resource type="Script" uid="uid://b1e4yd5c6vkog" path="res://scripts/entities/Entity.gd" id="6_h8tnp"]
 [ext_resource type="PackedScene" uid="uid://dbrnh7valfucy" path="res://scenes/imported/PlayerCharacter.tscn" id="6_pewrh"]
+[ext_resource type="PhysicsMaterial" uid="uid://dnea65vr3hyuc" path="res://assets/materials/DoorBumper.tres" id="7_qeo6q"]
+[ext_resource type="Script" uid="uid://dmpvtie4e2p73" path="res://scripts/entities/Door.gd" id="8_jop2r"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_070rk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_070rk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8luvy"]
+size = Vector3(10, 10, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ak4i2"]
+size = Vector3(10, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hlp7d"]
+size = Vector3(20, 40, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7akvu"]
+size = Vector3(20, 40, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ntrtt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ovi3g"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kn68e"]
+size = Vector3(20, 40, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dp8tf"]
+size = Vector3(20, 40, 2)
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_gv6bp")
@@ -24,22 +53,136 @@ script = ExtResource("3_070rk")
 [node name="world_map" parent="World" instance=ExtResource("4_pewrh")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, -50, 0)
 
-[node name="buildings" parent="World/world_map" instance=ExtResource("5_070rk")]
-transform = Transform3D(-0.311577, 0, -0.512757, 0, 0.6, 0, 0.512757, 0, -0.311577, -8.46027, 7.64918, 35.0472)
-
 [node name="WorldLight" type="DirectionalLight3D" parent="World"]
 transform = Transform3D(-0.939693, 0.17101, -0.296198, 0, 0.866025, 0.5, 0.34202, 0.469846, -0.813798, 0, 0, 0)
 light_color = Color(1, 0.815686, 0.815686, 1)
 
+[node name="Box" type="RigidBody3D" parent="World"]
+transform = Transform3D(0.627066, 0, 0.778966, 0, 1, 0, -0.778966, 0, 0.627066, -16.5217, 0, 184.827)
+gravity_scale = 0.0
+script = ExtResource("6_h8tnp")
+
+[node name="BoxCollision" type="CollisionShape3D" parent="World/Box"]
+shape = SubResource("BoxShape3D_070rk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Box"]
+mesh = SubResource("BoxMesh_070rk")
+skeleton = NodePath("")
+
+[node name="Box2" type="RigidBody3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.1746, -5.5248, 188.055)
+mass = 50.0
+script = ExtResource("6_h8tnp")
+
+[node name="BoxCollision" type="CollisionShape3D" parent="World/Box2"]
+shape = SubResource("BoxShape3D_8luvy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Box2"]
+mesh = SubResource("BoxMesh_ak4i2")
+skeleton = NodePath("")
+
+[node name="Door" type="Node3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.99, 8.5, 176.71)
+rotation_edit_mode = 1
+script = ExtResource("6_ak4i2")
+closingSpeed = 1.0
+timeBeforeClose = 3000.0
+doorDimensions = Vector3(20, 40, 2)
+
+[node name="DoorBody" type="RigidBody3D" parent="World/Door"]
+collision_layer = 3
+collision_mask = 3
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+mass = 10.0
+physics_material_override = ExtResource("7_qeo6q")
+gravity_scale = 0.0
+center_of_mass_mode = 1
+center_of_mass = Vector3(10, 0, 0)
+angular_damp_mode = 1
+angular_damp = 0.5
+script = ExtResource("8_jop2r")
+
+[node name="Collision" type="CollisionShape3D" parent="World/Door/DoorBody"]
+shape = SubResource("BoxShape3D_hlp7d")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Door/DoorBody/Collision"]
+mesh = SubResource("BoxMesh_7akvu")
+skeleton = NodePath("")
+
+[node name="DoorBumperBack" type="StaticBody3D" parent="World/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, 1.5)
+collision_layer = 2
+collision_mask = 2
+
+[node name="Collision" type="CollisionShape3D" parent="World/Door/DoorBumperBack"]
+shape = SubResource("BoxShape3D_ntrtt")
+
+[node name="DoorBumperFront" type="StaticBody3D" parent="World/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, -1.5)
+collision_layer = 2
+collision_mask = 2
+
+[node name="Collision" type="CollisionShape3D" parent="World/Door/DoorBumperFront"]
+shape = SubResource("BoxShape3D_ovi3g")
+
+[node name="Door2" type="Node3D" parent="World"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -35, 8.5, 176.71)
+rotation_edit_mode = 1
+script = ExtResource("6_ak4i2")
+closingSpeed = 1.0
+timeBeforeClose = 3000.0
+doorDimensions = Vector3(20, 40, 2)
+
+[node name="DoorBody" type="RigidBody3D" parent="World/Door2"]
+collision_layer = 3
+collision_mask = 3
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+mass = 10.0
+physics_material_override = ExtResource("7_qeo6q")
+gravity_scale = 0.0
+center_of_mass_mode = 1
+center_of_mass = Vector3(10, 0, 0)
+angular_damp_mode = 1
+angular_damp = 0.5
+script = ExtResource("8_jop2r")
+
+[node name="Collision" type="CollisionShape3D" parent="World/Door2/DoorBody"]
+shape = SubResource("BoxShape3D_kn68e")
+
+[node name="Mesh" type="MeshInstance3D" parent="World/Door2/DoorBody/Collision"]
+mesh = SubResource("BoxMesh_dp8tf")
+skeleton = NodePath("")
+
+[node name="DoorBumperBack" type="StaticBody3D" parent="World/Door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, 1.5)
+collision_layer = 2
+collision_mask = 2
+
+[node name="Collision" type="CollisionShape3D" parent="World/Door2/DoorBumperBack"]
+shape = SubResource("BoxShape3D_ntrtt")
+
+[node name="DoorBumperFront" type="StaticBody3D" parent="World/Door2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, -1.5)
+collision_layer = 2
+collision_mask = 2
+
+[node name="Collision" type="CollisionShape3D" parent="World/Door2/DoorBumperFront"]
+shape = SubResource("BoxShape3D_ovi3g")
+
 [node name="TrackingCamera" parent="." instance=ExtResource("4_h8tnp")]
-offset = Vector3(-1, 1, 0)
+offset = Vector3(-1, 1, -5)
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("6_pewrh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, -11.2769, 200)
-wall_min_slide_angle = 0.785398
-safe_margin = 0.1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.046, -10.8874, 174.021)
 speed = 0.1
-jump_height = 10.0
 metadata/Camera = NodePath("../TrackingCamera")
 
 [connection signal="mouseMoved" from="Managers/InputsManager" to="PlayerCharacter" method="look"]
@@ -50,3 +193,5 @@ metadata/Camera = NodePath("../TrackingCamera")
 [connection signal="playerUnsheathed" from="Managers/InputsManager" to="PlayerCharacter" method="toggle_weapon"]
 [connection signal="zoomedIn" from="Managers/InputsManager" to="PlayerCharacter" method="zoom_in"]
 [connection signal="zoomedOut" from="Managers/InputsManager" to="PlayerCharacter" method="zoom_out"]
+[connection signal="body_entered" from="World/Door/DoorBody" to="World/Door/DoorBody" method="bumper_collided"]
+[connection signal="body_entered" from="World/Door2/DoorBody" to="World/Door2/DoorBody" method="bumper_collided"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dbrnh7valfucy"]
+[gd_scene load_steps=34 format=3 uid="uid://dbrnh7valfucy"]
 
 [ext_resource type="PackedScene" uid="uid://cxqjklbhljt56" path="res://blender/player_character.blend" id="1_fc6pp"]
 [ext_resource type="Script" uid="uid://bvbo6acgu12tk" path="res://scripts/entities/PlayerControls.gd" id="2_4siwg"]
@@ -35,6 +35,9 @@ nodes/Animation/position = Vector2(-300, 180)
 "nodes/Animation 2/position" = Vector2(-339.816, 396.201)
 node_connections = [&"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"output", 0, &"Add2"]
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gq5vx"]
+animation = &"SwordStab"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hhwm3"]
 animation = &"SwordSwing1"
 
@@ -45,64 +48,64 @@ animation = &"SwordSwing2"
 xfade_time = 0.2
 break_loop_at_end = true
 advance_mode = 2
-advance_expression = "moving_direction.length() > 0"
+advance_expression = "walkDirection.length() > 0"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uyg84"]
-xfade_time = 0.2
+xfade_time = 0.1
 break_loop_at_end = true
 advance_mode = 2
-advance_expression = "moving_direction.length() == 0"
+advance_expression = "walkDirection.length() == 0"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sw5ms"]
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7y4c6"]
 advance_mode = 2
-advance_expression = "is_falling"
+advance_expression = "isFalling"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e27c5"]
 advance_mode = 2
-advance_expression = "is_falling"
+advance_expression = "isFalling"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b4str"]
 advance_mode = 2
-advance_expression = "not is_falling
+advance_expression = "not isFalling
 "
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_71b2l"]
 switch_mode = 2
 advance_mode = 2
-advance_expression = "not is_falling"
+advance_expression = "not isFalling"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o0qsi"]
 xfade_time = 0.1
 advance_mode = 2
-advance_expression = "unsheathed"
+advance_expression = "isWeaponOut"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ly0m1"]
 xfade_time = 0.1
 advance_mode = 2
-advance_expression = "not unsheathed"
+advance_expression = "not isWeaponOut"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b0j8w"]
 xfade_time = 0.1
 advance_mode = 2
-advance_expression = "moving_direction.length() == 0"
+advance_expression = "walkDirection.length() == 0"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hhwm3"]
 xfade_time = 0.1
 advance_mode = 2
-advance_expression = "not unsheathed"
+advance_expression = "not isWeaponOut"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_emahl"]
 xfade_time = 0.1
 advance_mode = 2
-advance_expression = "moving_direction.length() != 0"
+advance_expression = "walkDirection.length() != 0"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gq5vx"]
 xfade_time = 0.1
 advance_mode = 2
-advance_expression = "unsheathed"
+advance_expression = "isWeaponOut"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cdjyd"]
 xfade_time = 0.1
@@ -114,27 +117,39 @@ xfade_time = 0.1
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i0cti"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n5on3"]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lsq4m"]
+xfade_time = 0.1
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_71b2l"]
 states/Backflip/node = SubResource("AnimationNodeAnimation_4siwg")
-states/Backflip/position = Vector2(412, 41.918)
+states/Backflip/position = Vector2(330, -36.082)
 states/Idle/node = SubResource("AnimationNodeAnimation_7y4c6")
-states/Idle/position = Vector2(360, 177)
+states/Idle/position = Vector2(330, 93)
 states/Run/node = SubResource("AnimationNodeAnimation_b4str")
-states/Run/position = Vector2(487, 177)
-states/Start/position = Vector2(202, 93)
+states/Run/position = Vector2(549, -36.082)
+states/Start/position = Vector2(204, 93)
 states/SwordIdle/node = SubResource("AnimationNodeAnimation_o0qsi")
-states/SwordIdle/position = Vector2(649, 273.918)
+states/SwordIdle/position = Vector2(338, 198.918)
 states/SwordRun/node = SubResource("AnimationNodeBlendTree_hhwm3")
-states/SwordRun/position = Vector2(640, 177)
+states/SwordRun/position = Vector2(549, 198.918)
+states/SwordStab/node = SubResource("AnimationNodeAnimation_gq5vx")
+states/SwordStab/position = Vector2(204, 344.918)
 states/SwordSwing1/node = SubResource("AnimationNodeAnimation_hhwm3")
-states/SwordSwing1/position = Vector2(840, 198.918)
+states/SwordSwing1/position = Vector2(204, 198.918)
 states/SwordSwing2/node = SubResource("AnimationNodeAnimation_emahl")
-states/SwordSwing2/position = Vector2(840, 273.918)
-transitions = ["Idle", "Run", SubResource("AnimationNodeStateMachineTransition_ax8h7"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_uyg84"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_sw5ms"), "Run", "Backflip", SubResource("AnimationNodeStateMachineTransition_7y4c6"), "Idle", "Backflip", SubResource("AnimationNodeStateMachineTransition_e27c5"), "Backflip", "Run", SubResource("AnimationNodeStateMachineTransition_b4str"), "Backflip", "Idle", SubResource("AnimationNodeStateMachineTransition_71b2l"), "Run", "SwordRun", SubResource("AnimationNodeStateMachineTransition_o0qsi"), "SwordRun", "Run", SubResource("AnimationNodeStateMachineTransition_ly0m1"), "SwordRun", "SwordIdle", SubResource("AnimationNodeStateMachineTransition_b0j8w"), "SwordIdle", "Idle", SubResource("AnimationNodeStateMachineTransition_hhwm3"), "SwordIdle", "SwordRun", SubResource("AnimationNodeStateMachineTransition_emahl"), "Idle", "SwordIdle", SubResource("AnimationNodeStateMachineTransition_gq5vx"), "SwordSwing1", "SwordIdle", SubResource("AnimationNodeStateMachineTransition_cdjyd"), "SwordSwing2", "SwordIdle", SubResource("AnimationNodeStateMachineTransition_j0dgw")]
-graph_offset = Vector2(-139, -114.082)
+states/SwordSwing2/position = Vector2(204, 262.918)
+transitions = ["Idle", "Run", SubResource("AnimationNodeStateMachineTransition_ax8h7"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_uyg84"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_sw5ms"), "Run", "Backflip", SubResource("AnimationNodeStateMachineTransition_7y4c6"), "Idle", "Backflip", SubResource("AnimationNodeStateMachineTransition_e27c5"), "Backflip", "Run", SubResource("AnimationNodeStateMachineTransition_b4str"), "Backflip", "Idle", SubResource("AnimationNodeStateMachineTransition_71b2l"), "Run", "SwordRun", SubResource("AnimationNodeStateMachineTransition_o0qsi"), "SwordRun", "Run", SubResource("AnimationNodeStateMachineTransition_ly0m1"), "SwordRun", "SwordIdle", SubResource("AnimationNodeStateMachineTransition_b0j8w"), "SwordIdle", "Idle", SubResource("AnimationNodeStateMachineTransition_hhwm3"), "SwordIdle", "SwordRun", SubResource("AnimationNodeStateMachineTransition_emahl"), "Idle", "SwordIdle", SubResource("AnimationNodeStateMachineTransition_gq5vx"), "SwordSwing1", "SwordIdle", SubResource("AnimationNodeStateMachineTransition_cdjyd"), "SwordSwing2", "SwordIdle", SubResource("AnimationNodeStateMachineTransition_j0dgw"), "SwordSwing1", "SwordSwing2", SubResource("AnimationNodeStateMachineTransition_i0cti"), "SwordSwing2", "SwordStab", SubResource("AnimationNodeStateMachineTransition_n5on3"), "SwordStab", "SwordIdle", SubResource("AnimationNodeStateMachineTransition_lsq4m")]
+graph_offset = Vector2(-208, -303.082)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_o0qsi"]
-graph_offset = Vector2(-229.331, 97.9265)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_71b2l")
 nodes/StateMachine/position = Vector2(280, 240)
 nodes/output/position = Vector2(580, 240)
@@ -144,16 +159,16 @@ node_connections = [&"output", 0, &"StateMachine"]
 script = ExtResource("2_4siwg")
 
 [node name="Skeleton3D" parent="Player" index="2"]
-bones/0/position = Vector3(-0.35, 1.61401, 2.43427e-15)
+bones/0/position = Vector3(-0.35, 1.66094, 3.34895e-16)
 bones/0/rotation = Quaternion(0.707107, -2.56993e-08, -0.707107, -2.56993e-08)
 bones/1/rotation = Quaternion(-7.77364e-08, -2.20287e-07, -1.62788e-15, 1)
 bones/2/scale = Vector3(0, 0, 0)
-bones/3/position = Vector3(0.35, 1.60401, -2.26437e-10)
+bones/3/position = Vector3(0.35, 1.65094, -2.26437e-10)
 bones/3/rotation = Quaternion(0.707107, 2.63418e-08, 0.707107, -2.63418e-08)
 bones/5/scale = Vector3(0, 0, 0)
-bones/10/position = Vector3(1.00997e-08, 0.704012, 5.04724e-08)
+bones/10/position = Vector3(0, 0.750937, 5.20316e-08)
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="3"]
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
 tree_root = SubResource("AnimationNodeBlendTree_o0qsi")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")

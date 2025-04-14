@@ -15,6 +15,10 @@ run/main_scene="uid://bpe1mr0id330w"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/MakeDoor/plugin.cfg")
+
 [input]
 
 Left={
