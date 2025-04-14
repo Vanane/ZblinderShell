@@ -3,10 +3,13 @@ class_name Door
 
 
 #region Publics
-@export
+@export_custom(PROPERTY_HINT_NONE, "", PROPERTY_USAGE_INTERNAL)
 var closingSpeed:float
-@export
+@export_custom(PROPERTY_HINT_NONE, "", PROPERTY_USAGE_INTERNAL)
 var timeBeforeClose:float
+
+@export_custom(PROPERTY_HINT_NONE, "", PROPERTY_USAGE_INTERNAL)
+var doorDimensions: Vector3
 #endregion
 
 #region Privates
@@ -30,20 +33,22 @@ func _physics_process(delta: float) -> void:
 	lerp_close_door()
 
 func lerp_close_door():
-	if self._doorClosing:	
-		if snapped(self.rotation, Vector3.ONE * 0.01) == snapped(self._initialRotation, Vector3.ONE * 0.01):
+	if self._doorClosing:
+		if snapped(self.rotation, Vector3.ONE * 0.005) == snapped(self._initialRotation, Vector3.ONE * 0.005):
 			self._doorClosing = false
 			self.angular_velocity = Vector3.ZERO
 			self.linear_velocity = Vector3.ZERO
-			self.rotation = self._initialRotation
 		else:
-			self.apply_impulse(Vector3.LEFT.rotated(Vector3.UP, self.get_parent().rotation.y) * self.closingSpeed)
+			self.apply_force(Vector3.FORWARD * self.closingSpeed * sign(self.rotation.y), -self.center_of_mass)
+			self.apply_force(Vector3.BACK * self.closingSpeed * sign(self.rotation.y), self.center_of_mass)
+
 
 
 func bumper_collided(a:PhysicsBody3D):
 	self.angular_velocity *= -1
 
 func push_door(who:PhysicsBody3D, impulse:Vector3):
+	self._doorClosing = false
 	self.apply_impulse(impulse, who.global_position - self.global_position)
 	
 	if self._timerCloseDoor != null:

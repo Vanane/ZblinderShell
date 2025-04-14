@@ -1,21 +1,23 @@
-[gd_scene load_steps=7 format=3 uid="uid://c80qghf3r8xuv"]
+[gd_scene load_steps=8 format=3 uid="uid://c80qghf3r8xuv"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://dnea65vr3hyuc" path="res://assets/materials/DoorBumper.tres" id="1_rwqoy"]
 [ext_resource type="Script" uid="uid://b51w5rlpk118m" path="res://scripts/entities/DoorRoot.gd" id="1_sqvrh"]
 [ext_resource type="Script" uid="uid://dmpvtie4e2p73" path="res://scripts/entities/Door.gd" id="2_sqvrh"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_h8tnp"]
-size = Vector3(2, 40, 0.125)
+[sub_resource type="BoxShape3D" id="BoxShape3D_sqvrh"]
+size = Vector3(1.25, 2, 0.2)
 
-[sub_resource type="BoxMesh" id="BoxMesh_h8tnp"]
-size = Vector3(2, 40, 0.125)
+[sub_resource type="BoxMesh" id="BoxMesh_sqvrh"]
+size = Vector3(1.25, 2, 0.2)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ak4i2"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ntrtt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ovi3g"]
 
 [node name="Door" type="Node3D"]
 rotation_edit_mode = 1
 script = ExtResource("1_sqvrh")
-doorDimensions = Vector3(2, 2, 0.125)
+doorDimensions = Vector3(1.25, 2, 0.2)
 
 [node name="DoorBody" type="RigidBody3D" parent="."]
 collision_layer = 3
@@ -29,34 +31,32 @@ mass = 2.0
 physics_material_override = ExtResource("1_rwqoy")
 gravity_scale = 0.0
 center_of_mass_mode = 1
-center_of_mass = Vector3(1, 0, 0)
+center_of_mass = Vector3(0.625, 0, 0)
 angular_damp_mode = 1
 angular_damp = 0.5
 script = ExtResource("2_sqvrh")
-closingSpeed = 0.025
-timeBeforeClose = 3000.0
 
 [node name="Collision" type="CollisionShape3D" parent="DoorBody"]
-shape = SubResource("BoxShape3D_h8tnp")
+shape = SubResource("BoxShape3D_sqvrh")
 
 [node name="Mesh" type="MeshInstance3D" parent="DoorBody/Collision"]
-mesh = SubResource("BoxMesh_h8tnp")
+mesh = SubResource("BoxMesh_sqvrh")
 skeleton = NodePath("")
 
 [node name="DoorBumperBack" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5625, 0, 0.5625)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.225, 0, 0.6)
 collision_layer = 2
 collision_mask = 2
 
 [node name="Collision" type="CollisionShape3D" parent="DoorBumperBack"]
-shape = SubResource("BoxShape3D_ak4i2")
+shape = SubResource("BoxShape3D_ntrtt")
 
 [node name="DoorBumperFront" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5625, 0, -0.5625)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.225, 0, -0.6)
 collision_layer = 2
 collision_mask = 2
 
 [node name="Collision" type="CollisionShape3D" parent="DoorBumperFront"]
-shape = SubResource("BoxShape3D_ak4i2")
+shape = SubResource("BoxShape3D_ovi3g")
 
 [connection signal="body_entered" from="DoorBody" to="DoorBody" method="bumper_collided"]

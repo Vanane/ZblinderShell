@@ -3,7 +3,13 @@ extends Node3D
 class_name DoorRoot
 
 #region Publics
-@export var doorDimensions: Vector3:
+@export
+var closingSpeed:float
+@export
+var timeBeforeClose:float
+
+@export
+var doorDimensions: Vector3:
 	set(new):
 		doorDimensions = new
 		if self.is_node_ready():
@@ -23,6 +29,10 @@ func _ready():
 	self.doorCol = $"DoorBody/Collision"
 	self.doorMesh = $"DoorBody/Collision/Mesh"
 	
+	self.doorBody.doorDimensions = self.doorDimensions
+	self.doorBody.closingSpeed = self.closingSpeed
+	self.doorBody.timeBeforeClose = self.timeBeforeClose
+	
 	self.resize_elements()
 
 
@@ -33,7 +43,7 @@ func resize_elements():
 func resize_door():
 	self.doorCol.shape.size = self.doorDimensions
 	self.doorMesh.mesh.size = self.doorDimensions
-	doorBody.center_of_mass = Vector3(self.doorDimensions.x/2, 0, 0)
+	doorBody.center_of_mass = Vector3(self.doorDimensions.x / 2, 0, 0)
 	
 func resize_bumpers():
 	var i = 1
