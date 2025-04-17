@@ -1,12 +1,17 @@
-extends Object
-class_name LiveEntity
+extends Node3D
+class_name EntityStats
 
 const WALK_SPEED = 2#m/s
 const ROTATION_SPEED = 10#
 
 const JUMP_HEIGHT = 1#m
 
-#region Char Stats
+#region Signals
+signal healthDepleted
+signal staminaDepleted
+signal manaDepleted
+
+#region Publics
 @export
 var maxHealth:float
 @export
@@ -37,7 +42,7 @@ static func default():
 	r.stamina = 1
 	r.maxMana = 1
 	r.mana = 1
-	r.walkSpeed = 6
+	r.walkSpeed = 1
 	r.jumpHeight = 1
 	
 	return r
