@@ -1,5 +1,7 @@
 extends RigidBody3D
-class_name Entity
+class_name RigidEntity
+
+var stats:EntityStats
 
 
 func _physics_process(delta: float) -> void:
@@ -8,5 +10,3 @@ func _physics_process(delta: float) -> void:
 
 func _process_gravity():
 	self.apply_force(get_gravity())
-	if name == "Box":
-		self.apply_force(Vector3.LEFT)

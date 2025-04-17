@@ -58,4 +58,3 @@ func resize_bumpers():
 			i * (self.doorDimensions.z / 2 + bumperCol.shape.size.z / 2))
 		
 		i *= -1
-		

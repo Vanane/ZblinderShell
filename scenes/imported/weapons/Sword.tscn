@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://ct2l7lnsak1bc"]
+
+[ext_resource type="PackedScene" uid="uid://ddwvtdu2k758f" path="res://blender/sword.blend" id="1_2d787"]
+[ext_resource type="Script" uid="uid://c85fy4c0u5jtg" path="res://scripts/data/weapons/Sword.gd" id="2_48svp"]
+
+[node name="sword" instance=ExtResource("1_2d787")]
+script = ExtResource("2_48svp")
