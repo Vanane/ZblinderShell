@@ -11,7 +11,7 @@ var timeBeforeClose:float
 @export
 var doorDimensions: Vector3:
 	set(new):
-		doorDimensions = new
+		doorDimensions = new.clamp(Vector3.ONE * 0.01, new)
 		if self.is_node_ready():
 			self.resize_elements()
 #endregion

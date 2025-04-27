@@ -127,22 +127,20 @@ func block() -> void:
 
 #region Animation Signals
 
-func allow_attack():
-	self.weapon.isAllowedToAttack = true
-
 func attack_ended():
-	self.weapon.isAllowedToAttack = true
-	self.weapon.resetCombo()
-
+	self.weapon.attack_ended()
+	
+func combo_ended():
+	self.weapon.combo_ended()
 
 func do_attack(hand:Weapon.Hand):
-	if not self.weapon.isWeaponOut || not self.weapon.isAllowedToAttack:
+	if not self.weapon.isWeaponOut || not self.weapon.isAllowedToAttack || self.weapon.isSwinging:
 		return
 	
-	var c:Combo = self.weapon.nextCombo(hand)
+	var c:Combo = self.weapon.next_combo(hand)
 
 	if not c == null:
-		self.weapon.isAllowedToAttack = false
+		self.weapon.attack_started()
 		self._animSM.travel(c.animation)
 
 #endregion
@@ -150,12 +148,10 @@ func do_attack(hand:Weapon.Hand):
 #region Player Controls
 func unsheath_weapon():
 	self.weapon.unsheath()
-	self.weapon.set_process(true)
 	self.weapon.visible = true
 
 func sheath_weapon():
 	self.weapon.sheath()
-	self.weapon.set_process(false)
 	self.weapon.visible = false
 
 #endregion

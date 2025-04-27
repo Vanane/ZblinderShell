@@ -7,25 +7,39 @@ const ROTATION_SPEED = 10#
 const JUMP_HEIGHT = 1#m
 
 #region Signals
-signal healthDepleted
-signal staminaDepleted
-signal manaDepleted
+signal healthModified
+signal staminaModified
+signal manaModified
 
+signal healthDepleted(oldV:float, newV:float)
+signal staminaDepleted(oldV:float, newV:float)
+signal manaDepleted(oldV:float, newV:float)
+#endregion
 #region Publics
 @export
 var maxHealth:float
+
 @export
-var health:float
+var health:float:
+	set(v):
+		healthModified.emit(health, v)
+		health = v
 
 @export
 var maxStamina:float
 @export
-var stamina:float
+var stamina:float:
+	set(v):
+		staminaModified.emit(stamina, v)
+		stamina = v
 
 @export
 var maxMana:float
 @export
-var mana:float
+var mana:float:
+	set(v):
+		manaModified.emit(mana, v)
+		mana = v
 
 @export
 var walkSpeed:float
@@ -36,12 +50,12 @@ var jumpHeight:float
 static func default():
 	'''Initializes a functional stats sheet'''
 	var r = new()
-	r.maxHealth = 1
-	r.health = 1
-	r.maxStamina = 1
-	r.stamina = 1
-	r.maxMana = 1
-	r.mana = 1
+	r.maxHealth = 100
+	r.health = 100
+	r.maxStamina = 100
+	r.stamina = 100
+	r.maxMana = 100
+	r.mana = 100
 	r.walkSpeed = 1
 	r.jumpHeight = 1
 	
@@ -59,3 +73,18 @@ func get_gravity() -> float:
 	
 func get_gravity_force() -> Vector3:
 	return Vector3(ProjectSettings.get_setting("physics/3d/default_gravity_vector")) * get_gravity()
+
+func append_health(amount:float):
+	self.health = clamp(self.health + amount, 0, self.maxHealth)
+	if self.health == 0:
+		self.healthDepleted.emit()
+
+func append_stamina(amount:float):
+	self.stamina = clamp(self.stamina + amount, 0, self.maxStamina)
+	if self.stamina == 0:
+		self.staminaDepleted.emit()
+
+func append_mana(amount:float):
+	self.mana = clamp(self.mana + amount, 0, self.maxMana)
+	if self.mana == 0:
+		self.manaDepleted.emit()

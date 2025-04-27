@@ -37,34 +37,43 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.046, -10.8874, 174.021)
 metadata/Camera = NodePath("../TrackingCamera")
 
 [node name="Skeleton3D" parent="PlayerCharacter/Entity" index="2"]
-bones/0/position = Vector3(-0.35, 1.67675, 3.34895e-16)
-bones/3/position = Vector3(0.35, 1.66675, -2.26437e-10)
-bones/10/position = Vector3(0, 0.766752, 5.15944e-08)
+bones/0/position = Vector3(-0.35, 1.64976, 2.45722e-15)
+bones/0/rotation = Quaternion(0.707107, -2.56993e-08, -0.707107, -2.56993e-08)
+bones/1/rotation = Quaternion(-7.77364e-08, -2.20287e-07, -1.62788e-15, 1)
+bones/2/rotation = Quaternion(2.39343e-08, -1.25686e-07, 7.6642e-15, 1)
+bones/3/position = Vector3(0.35, 1.63976, -2.26437e-10)
+bones/3/rotation = Quaternion(0.707107, 2.63418e-08, 0.707107, -2.63418e-08)
+bones/10/position = Vector3(1.00997e-08, 0.739764, 4.94842e-08)
 
 [node name="EntityStats" parent="PlayerCharacter" index="3"]
 walkSpeed = 5.0
 
 [node name="RightFingersAttachment" parent="PlayerCharacter" index="5"]
-transform = Transform3D(-3.34317e-07, 3.49157e-08, -1, -5.39588e-14, -1, -3.49157e-08, -1, 4.34123e-14, 3.34317e-07, -0.35, 0.906752, 0)
+transform = Transform3D(-3.34317e-07, 3.49157e-08, -1, -5.39588e-14, -1, -3.49157e-08, -1, 4.34123e-14, 3.34317e-07, -0.35, 0.879764, 0)
 
-[node name="sword" parent="PlayerCharacter/RightFingersAttachment" index="0" instance=ExtResource("7_h8tnp")]
+[node name="sword" parent="PlayerCharacter/RightFingersAttachment" index="0" node_paths=PackedStringArray("weaponOwner") instance=ExtResource("7_h8tnp")]
+weaponOwner = NodePath("../..")
 
 [node name="LeftFingersAttachment" parent="PlayerCharacter" index="6"]
-transform = Transform3D(-7.59959e-07, 7.10543e-15, 1, -5.40301e-15, -1, 2.13163e-14, 1, -5.40299e-15, 7.59959e-07, 0.35, 0.906753, 0)
+transform = Transform3D(-7.59959e-07, 7.10543e-15, 1, -5.40301e-15, -1, 2.13163e-14, 1, -5.40299e-15, 7.59959e-07, 0.35, 0.879765, 0)
 
 [node name="NonPlayerCharacter" parent="." instance=ExtResource("7_070rk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.012, -5.13383, 182.574)
 
 [node name="Skeleton3D" parent="NonPlayerCharacter/Entity" index="2"]
-bones/0/position = Vector3(-0.35, 1.67675, 3.34895e-16)
+bones/0/position = Vector3(-0.35, 1.64976, 2.45722e-15)
 bones/0/rotation = Quaternion(0.707107, -2.56993e-08, -0.707107, -2.56993e-08)
 bones/1/rotation = Quaternion(-7.77364e-08, -2.20287e-07, -1.62788e-15, 1)
 bones/2/rotation = Quaternion(2.39343e-08, -1.25686e-07, 7.6642e-15, 1)
 bones/2/scale = Vector3(1, 1, 1)
-bones/3/position = Vector3(0.35, 1.66675, -2.26437e-10)
+bones/3/position = Vector3(0.35, 1.63976, -2.26437e-10)
 bones/3/rotation = Quaternion(0.707107, 2.63418e-08, 0.707107, -2.63418e-08)
 bones/5/scale = Vector3(1, 1, 1)
-bones/10/position = Vector3(0, 0.766752, 5.15944e-08)
+bones/10/position = Vector3(1.00997e-08, 0.739764, 4.94842e-08)
+
+[node name="EntityStats" parent="NonPlayerCharacter" index="3"]
+maxHealth = 10.0
+health = 10.0
 
 [connection signal="mouseMoved" from="Managers/InputsManager" to="PlayerCharacter" method="look"]
 [connection signal="playerAttacked" from="Managers/InputsManager" to="PlayerCharacter" method="attack"]

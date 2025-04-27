@@ -151,7 +151,6 @@ transitions = ["Idle", "Run", SubResource("AnimationNodeStateMachineTransition_a
 graph_offset = Vector2(-329, 16.918)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_o0qsi"]
-graph_offset = Vector2(-124.851, 109.648)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_71b2l")
 nodes/StateMachine/position = Vector2(280, 240)
 nodes/output/position = Vector2(580, 240)
@@ -161,13 +160,13 @@ node_connections = [&"output", 0, &"StateMachine"]
 script = ExtResource("2_3uc3q")
 
 [node name="Skeleton3D" parent="Entity" index="2"]
-bones/0/position = Vector3(-0.35, 1.62898, 3.34895e-16)
+bones/0/position = Vector3(-0.35, 1.62721, 2.43427e-15)
 bones/0/rotation = Quaternion(0.707107, -2.56993e-08, -0.707107, -2.56993e-08)
 bones/1/rotation = Quaternion(-7.77364e-08, -2.20287e-07, -1.62788e-15, 1)
 bones/2/rotation = Quaternion(2.39343e-08, -1.25686e-07, 7.6642e-15, 1)
-bones/3/position = Vector3(0.35, 1.61898, -2.26437e-10)
+bones/3/position = Vector3(0.35, 1.61721, -2.26437e-10)
 bones/3/rotation = Quaternion(0.707107, 2.63418e-08, 0.707107, -2.63418e-08)
-bones/10/position = Vector3(0, 0.718984, 5.29148e-08)
+bones/10/position = Vector3(1.00997e-08, 0.717211, 5.01076e-08)
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="2"]
 tree_root = SubResource("AnimationNodeBlendTree_o0qsi")
@@ -187,14 +186,14 @@ walkSpeed = 1.0
 jumpHeight = 1.0
 
 [node name="RightFingersAttachment" type="BoneAttachment3D" parent="." index="5"]
-transform = Transform3D(-3.34317e-07, 3.49157e-08, -1, -5.39588e-14, -1, -3.49157e-08, -1, 4.34123e-14, 3.34317e-07, -0.35, 0.858984, 1.6663e-15)
+transform = Transform3D(-3.34317e-07, 3.49157e-08, -1, -5.39588e-14, -1, -3.49157e-08, -1, 4.34123e-14, 3.34317e-07, -0.35, 0.857211, 3.76568e-15)
 bone_name = "RightFingers"
 bone_idx = 2
 use_external_skeleton = true
 external_skeleton = NodePath("../Entity/Skeleton3D")
 
 [node name="LeftFingersAttachment" type="BoneAttachment3D" parent="." index="6"]
-transform = Transform3D(-7.59959e-07, 7.10543e-15, 1, -5.40301e-15, -1, 2.13163e-14, 1, -5.40299e-15, 7.59959e-07, 0.35, 0.858985, -2.26462e-10)
+transform = Transform3D(-7.59959e-07, 7.10543e-15, 1, -5.40301e-15, -1, 2.13163e-14, 1, -5.40299e-15, 7.59959e-07, 0.35, 0.857211, -2.26461e-10)
 bone_name = "LeftFingers"
 bone_idx = 5
 use_external_skeleton = true

@@ -17,10 +17,14 @@ func _init() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if not self.isSwinging:
+		return
 	var k = self.move_and_collide(Vector3.ZERO, true)
 	if k:
 		var c = k.get_collider()
 		if c is CharacterEntity:
-			print(c.name)
+			if self.collisionTracker.find(c) < 0:
+				c.take_damage(self.currentCombo.rawDamage, self.weaponOwner)
+				self.collisionTracker.append(c)
 			
 	
