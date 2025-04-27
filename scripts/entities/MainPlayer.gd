@@ -1,24 +1,13 @@
-extends CharacterBody3D
+extends CharacterEntity
 
 #region Publics
-@export_custom(PROPERTY_HINT_NONE, "readonly", PROPERTY_USAGE_READ_ONLY)
-var stats:LiveEntity
-
-@export
-var speed:float
-@export
-var jumpHeight:float
-@export
-var isWeaponOut:bool = false
-
-@export
-var isAllowedToAttack:bool
-
-
 @export_custom(PROPERTY_HINT_NONE, "readonly", PROPERTY_USAGE_READ_ONLY)
 var walkDirection:Vector2
 @export_custom(PROPERTY_HINT_NONE, "readonly", PROPERTY_USAGE_READ_ONLY)
 var isFalling:bool
+
+@export_custom(PROPERTY_HINT_NONE, "readonly", PROPERTY_USAGE_READ_ONLY)
+var weapon:Weapon
 #endregion
 
 #region Privates
@@ -27,17 +16,18 @@ var _camera:TrackingCamera
 
 var _walkDirection:Vector2
 var _cameraRotation:Vector2
+var _lastVelocity:Vector3
 
-var _weapon:Weapon
 #endregion
 
 func _ready():
 	self._animSM = $"AnimationTree".get("parameters/StateMachine/playback")
-	
-	self._weapon = Sword.default()
-	self.stats = LiveEntity.default()
+	self.weapon = $RightFingersAttachment/sword
 	
 	self._setup_camera()
+	
+	self.add_collision_exception_with(self.weapon)
+	self.sheath_weapon()
 
 func _process(delta:float) -> void:
 	self._refresh_anim_flags()
@@ -46,17 +36,10 @@ func _physics_process(delta: float) -> void:
 	_process_controls(delta)
 	_process_gravity(delta)	
 	
-	var lastVelocity = self.velocity
+	_lastVelocity = self.velocity
 	self.move_and_slide()
 	
-	var k = self.get_last_slide_collision()
-	if k:
-		var c = k.get_collider()
-		if c is RigidBody3D:
-			if c is Door:
-				c.push_door(self, lastVelocity)
-			else:
-				c.apply_impulse(lastVelocity, self.global_position)
+	_process_collisions(delta)
 	
 	_process_cleanup(delta)
 
@@ -84,10 +67,19 @@ func _process_controls(delta: float):
 			lerp(self.velocity.x, 0.0, self.stats.ROTATION_SPEED * delta),
 			self.velocity.y,
 			lerp(self.velocity.z, 0.0, self.stats.ROTATION_SPEED * delta))
-
-func _process_gravity(delta:float):
-	self.velocity += self.stats.get_gravity_force() * delta
 	
+func _process_collisions(delta:float):
+	var k = self.get_last_slide_collision()
+	if k:
+		var c = k.get_collider()
+		if c is RigidBody3D:
+			if c is Door:
+				c.push_door(self, _lastVelocity)
+			else:
+				c.apply_impulse(_lastVelocity, self.global_position)
+		else:
+			pass#print("%s collided with %s" % [self.name, c.name])
+
 
 func _process_cleanup(delta: float):
 	self._walkDirection = Vector2.ZERO
@@ -121,18 +113,10 @@ func zoom_out() -> void:
 	self._camera.add_distance()
 
 func toggle_weapon() -> void:
-	self.isAllowedToAttack = true
-	self.isWeaponOut = not self.isWeaponOut
-	pass # Replace with function body.
-
-
-func allow_attack():
-	self.isAllowedToAttack = true
-
-func attack_ended():
-	self.isAllowedToAttack = true
-	self._weapon.resetCombo()
-
+	if self.weapon.isWeaponOut:
+		self.sheath_weapon()
+	else:
+		self.unsheath_weapon()
 
 func attack() -> void:
 	self.do_attack(Weapon.Hand.Main)
@@ -141,14 +125,33 @@ func block() -> void:
 	self.do_attack(Weapon.Hand.Side)
 #endregion
 
+#region Animation Signals
+
+func attack_ended():
+	self.weapon.attack_ended()
+	
+func combo_ended():
+	self.weapon.combo_ended()
 
 func do_attack(hand:Weapon.Hand):
-	if not self.isWeaponOut || not self.isAllowedToAttack:
+	if not self.weapon.isWeaponOut || not self.weapon.isAllowedToAttack || self.weapon.isSwinging:
 		return
 	
-	var c:Combo = self._weapon.nextCombo(hand)
+	var c:Combo = self.weapon.next_combo(hand)
 
 	if not c == null:
-		self.isAllowedToAttack = false
+		self.weapon.attack_started()
 		self._animSM.travel(c.animation)
-		print("playing " + c.animation)
+
+#endregion
+
+#region Player Controls
+func unsheath_weapon():
+	self.weapon.unsheath()
+	self.weapon.visible = true
+
+func sheath_weapon():
+	self.weapon.sheath()
+	self.weapon.visible = false
+
+#endregion

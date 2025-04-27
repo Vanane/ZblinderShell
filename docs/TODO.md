@@ -20,9 +20,17 @@
     - when fight stops, who won, who is alive
 - Implement different weapons : swords, rapiers, hammers, whips, bows, 1-handed, 2-handed, dual wield
 
-#### Dagger
+#### Weapon types
+
+Smth like Monster Hunter : somewhat exotic weapons with each having its own specifics
+
+#### Daggers
+
+dual wielding, quick hits, lots of stabbing
 
 #### Sword
+
+
 
 #### Rapier
 

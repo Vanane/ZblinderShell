@@ -1,4 +1,4 @@
-extends Entity
+extends RigidEntity
 class_name Door
 
 

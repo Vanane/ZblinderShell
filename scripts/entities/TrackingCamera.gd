@@ -1,4 +1,5 @@
-extends Node3D;class_name TrackingCamera;
+extends Node3D
+class_name TrackingCamera
 
 signal pov_entered
 signal pov_exited
